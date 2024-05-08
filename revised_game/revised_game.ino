@@ -107,9 +107,10 @@ void loop() {
     check_button_press(startbutton, lastStartButtonState, startButtonState, lastStartDebounceTime, debounceDelay, handleFirstStartButtonPress);
   }
   FastLED.clear();
-  while (player.level != game_level){
+  while (player.level != game_level && !player.idle){
     update_display(round_start[game_level-1], R, G, B);
     check_button_press(startbutton, lastStartButtonState, startButtonState, lastStartDebounceTime, debounceDelay, handleStartButtonPress);
+    check_button_press(resetbutton, lastResetButtonState, resetButtonState, lastResetDebounceTime, debounceDelay, handleResetButtonPress);
   }
   //GAME PLAY
   while (player.level == game_level){
@@ -294,6 +295,7 @@ void display_starting_map(Map random_map, unsigned long length,int R,int G,int B
   // Check if the duration has elapsed
   while (currentTime - startTime < duration) {
     currentTime = millis();
+    check_button_press(resetbutton, lastResetButtonState, resetButtonState, lastResetDebounceTime, debounceDelay, handleResetButtonPress);
     //Serial.println("Keep performing the task");
     //Serial.println(currentTime - startTime);
   }
@@ -355,6 +357,7 @@ void update_RGB(){
 }
 
 void game_over(){
+  game_level = 1;
   player.reset_player();
   display_starting_map(sad_face, 3000, 255, 0, 0);
 }
