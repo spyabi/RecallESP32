@@ -6,6 +6,14 @@ const int ledPin = 13; // LED pin number
 int x = 0;
 int myArray[] = {1, 0, 0, 0, 0, 0}; // Define array
 
+/*Led Top 19
+18
+5
+17
+16
+4
+*/
+
 CRGB strip_1[NUM_LED];
 
 void setup() {
