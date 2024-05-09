@@ -75,7 +75,7 @@ Images / video to be added in the future
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name](https://github.com/spyabi/RecallESP32)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
