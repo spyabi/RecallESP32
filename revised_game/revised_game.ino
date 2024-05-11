@@ -72,6 +72,7 @@ int resetButtonState = LOW;
 unsigned long lastResetDebounceTime = 0;
 
 int game_level = 1;
+bool ingame = false;
 
 int R = 0;
 int G = 0;
@@ -101,14 +102,15 @@ void setup() {
 }
 
 void loop() {
-  update_RGB();
   while (player.idle){
     FastLED.clear();
     FastLED.show();
     check_button_press(startbutton, lastStartButtonState, startButtonState, lastStartDebounceTime, debounceDelay, handleFirstStartButtonPress);
+    check_button_press(upbutton, lastUpButtonState, upButtonState, lastUpDebounceTime, debounceDelay, handleFirstUpButtonPress);
   }
   FastLED.clear();
-  while (player.level != game_level && !player.idle){
+  while (player.level != game_level && !player.idle && !ingame){
+    update_RGB();
     update_display(round_start[game_level-1], R, G, B);
     check_button_press(startbutton, lastStartButtonState, startButtonState, lastStartDebounceTime, debounceDelay, handleStartButtonPress);
     check_button_press(resetbutton, lastResetButtonState, resetButtonState, lastResetDebounceTime, debounceDelay, handleResetButtonPress);
@@ -143,6 +145,48 @@ void loop() {
     FastLED.clear();
     game_level = 1;
     player.reset_player();
+  }
+
+  while (ingame){
+  FastLED.clear();
+    while (player.level != game_level && !player.idle){
+      update_RGB();
+      display_starting_map(animation_map, 2000, 0, 255, 0);
+      update_display(round_start[game_level-1], R, G, B);
+      check_button_press(startbutton, lastStartButtonState, startButtonState, lastStartDebounceTime, debounceDelay, handleStartButtonPress);
+      check_button_press(resetbutton, lastResetButtonState, resetButtonState, lastResetDebounceTime, debounceDelay, handleResetButtonPress);
+    }
+    //GAME PLAY
+    while (player.level == game_level){
+      Serial.println("IM LOOPING HERE");
+      Map chosen_map = map_database[game_level-1][random((map_database[game_level-1]).size())];
+      player.set_x(chosen_map.startx);
+      player.set_y(chosen_map.starty);
+      player.update_map();
+      display_starting_map(chosen_map, 5000, R, G, B);
+      //while game not end
+      while (!chosen_map.map_checker(player.map) && player.level == game_level){
+        player.update_map();
+        update_display(player.map, R, G, B, player);
+        check_player_move(chosen_map);
+
+        if (chosen_map.map_checker(player.map)){
+          //smiley face
+          display_starting_map(smiley_face, 2000, 0, 255, 0);
+          game_level += 1;
+          player.reset_map();
+        }
+      }
+    }
+    //AFTER GAME PLAY LEVEL UP GAME LEVEL BY 1
+    // IF GAME PLAY == 6
+    //ANIMATION AND RESET AFTER ANIMATION
+    if (game_level == 6){
+      display_animation(round_endings[2], 100, 100, 100);
+      FastLED.clear();
+      game_level = 1;
+      player.reset_player();
+    }
   }
 }
 
@@ -361,4 +405,10 @@ void game_over(){
   game_level = 1;
   player.reset_player();
   display_starting_map(sad_face, 3000, 255, 0, 0);
+}
+
+void handleFirstUpButtonPress() {
+  // Your code to handle the right button press goes here
+  player.player_start();
+  ingame = true;
 }
