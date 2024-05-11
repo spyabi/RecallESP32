@@ -27,6 +27,7 @@ pros of const int = type declaration
 */
 
 const int NUM_LED = 6;
+//testing branch
 
 CRGB strip_1[NUM_LED];
 CRGB strip_2[NUM_LED];
@@ -361,7 +362,3 @@ void game_over(){
   player.reset_player();
   display_starting_map(sad_face, 3000, 255, 0, 0);
 }
-
-
-
-
