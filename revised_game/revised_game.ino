@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "variables.h"
+#include "recallvariables.h"
 #include <vector>
 
 //declare pins
@@ -46,6 +47,7 @@ Player player(0, start, 0, 0);
 Map smiley_face(0, round_endings[0], 0, 0);
 Map sad_face(0, round_endings[1], 0, 0);
 Map animation_map(0, round_endings[2], 0, 0);
+Map display_map(0, round_endings[3], 0, 0);
 int lastUpButtonState = LOW;
 int upButtonState = LOW;
 unsigned long lastUpDebounceTime = 0;
@@ -148,10 +150,10 @@ void loop() {
   }
 
   while (ingame){
-  FastLED.clear();
+    display_starting_map(animation_map, 2000, 0, 255, 0);
+    FastLED.clear();
     while (player.level != game_level && !player.idle){
       update_RGB();
-      display_starting_map(animation_map, 2000, 0, 255, 0);
       update_display(round_start[game_level-1], R, G, B);
       check_button_press(startbutton, lastStartButtonState, startButtonState, lastStartDebounceTime, debounceDelay, handleStartButtonPress);
       check_button_press(resetbutton, lastResetButtonState, resetButtonState, lastResetDebounceTime, debounceDelay, handleResetButtonPress);
@@ -159,18 +161,33 @@ void loop() {
     //GAME PLAY
     while (player.level == game_level){
       Serial.println("IM LOOPING HERE");
-      Map chosen_map = map_database[game_level-1][random((map_database[game_level-1]).size())];
-      player.set_x(chosen_map.startx);
-      player.set_y(chosen_map.starty);
+      Map chosen_map1 = recall_maps[random(recall_maps.size())];
+      Map chosen_map2 = recall_maps[random(recall_maps.size())];
+      Map chosen_map3 = recall_maps[random(recall_maps.size())];
+      Map maps_used[] = {chosen_map1, chosen_map2, chosen_map3};
+      int correct_map_index = random(3);
+      Map correct_map = maps_used[correct_map_index];
+      player.set_x(correct_map.startx);
+      player.set_y(correct_map.starty);
       player.update_map();
-      display_starting_map(chosen_map, 5000, R, G, B);
+      for (int i = 0; i < 3; i++){
+        if (!ingame){
+          break;
+        }
+        update_RGB_Recall(i);
+        display_starting_map(maps_used[i], (10000-(game_level - 1)*(2500)), R, G, B);
+      }
+      if (ingame){
+      update_RGB_Recall(correct_map_index);
+      display_starting_map(display_map, 2000, R, G, B);
+      }
       //while game not end
-      while (!chosen_map.map_checker(player.map) && player.level == game_level){
+      while (!correct_map.map_checker(player.map) && player.level == game_level && ingame){
         player.update_map();
         update_display(player.map, R, G, B, player);
-        check_player_move(chosen_map);
+        check_player_move(correct_map);
 
-        if (chosen_map.map_checker(player.map)){
+        if (correct_map.map_checker(player.map)){
           //smiley face
           display_starting_map(smiley_face, 2000, 0, 255, 0);
           game_level += 1;
@@ -181,7 +198,7 @@ void loop() {
     //AFTER GAME PLAY LEVEL UP GAME LEVEL BY 1
     // IF GAME PLAY == 6
     //ANIMATION AND RESET AFTER ANIMATION
-    if (game_level == 6){
+    if (game_level == 4){
       display_animation(round_endings[2], 100, 100, 100);
       FastLED.clear();
       game_level = 1;
@@ -401,8 +418,27 @@ void update_RGB(){
   }
 }
 
+void update_RGB_Recall(int i){
+  if (i == 0){
+    R = 255;
+    G = 0;
+    B = 0;
+  }
+  else if (i == 1){
+    R = 0;
+    G = 255;
+    B = 0;
+  }
+  else if (i == 2){
+    R = 0;
+    G = 0;
+    B = 255;
+  }
+}
+
 void game_over(){
   game_level = 1;
+  ingame = false;
   player.reset_player();
   display_starting_map(sad_face, 3000, 255, 0, 0);
 }

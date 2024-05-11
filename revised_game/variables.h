@@ -56,8 +56,15 @@ extern int animation[6][6] = {{1, 1, 1, 1, 1, 1},
                           {1, 1, 1, 1, 1, 1},
                           {1, 1, 1, 1, 1, 1},
                           {1, 1, 1, 1, 1, 1}};
+extern int display[6][6] = {{0, 0, 0, 0, 0, 0},
+                          {0, 0, 0, 0, 0, 0},
+                          {1, 1, 1, 1, 1, 1},
+                          {1, 1, 1, 1, 1, 1},
+                          {0, 0, 0, 0, 0, 0},
+                          {0, 0, 0, 0, 0, 0}};
+                          
 
-extern int (*round_endings[])[6] = {smiley, sad, animation};
+extern int (*round_endings[])[6] = {smiley, sad, animation, display};
 
 extern int map1_1_map[6][6] = {{0, 0, 0, 0, 0, 0},
                               {0, 0, 0, 0, 0, 0},
