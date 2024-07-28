@@ -21,11 +21,16 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+As part of a school project, I collaborated with my group members to develop a physical game prototype that utilizes FPGA, input switches, and LED strips. After the module, I kept the hardware (without the FPGA) and rewrote the entire game logic in C++ using Arduino IDE and an ESP32. I decided to revise the game logic to make it more beginner-friendly and intuitive as the original version was a tad too challenging and tested the user's memory capabilities extensively.
+
+### Watch the original video here!
+[![Watch the original video here!](https://img.youtube.com/vi/QIyJ8JZWWxQ/0.jpg)](https://youtu.be/QIyJ8JZWWxQ)
+
+This project is still a work in progress, which you can follow in this repository.
+
 <!--[![Product Name Screen Shot][product-screenshot]](https://example.com)-->
 
 <!--!Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`-->
-
-To be updated
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -33,9 +38,9 @@ To be updated
 
 ### Built With
 
-* [![C++ using Arduino IDE]
-* [![FastLED library]
-* [![ESP32]
+* ![C++ using Arduino IDE](https://img.shields.io/badge/C++-Arduino%20IDE-blue)
+* ![FastLED library](https://img.shields.io/badge/library-FastLED-brightgreen)
+* ![ESP32](https://img.shields.io/badge/ESP32-microcontroller-lightgrey)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -44,6 +49,8 @@ To be updated
 ## Usage
 
 Images / video to be added in the future
+
+[The original CAD](https://a360.co/3TNT633)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -57,7 +64,7 @@ Images / video to be added in the future
 - [ ] Add LCD screen + door handle (Hardware)
 - [ ] Feature 3
 - [ ] Add different modes
-    - [ ] Original Recall
+    - [x] Original Recall (testing in separate branch)
     - [ ] Connect4
     - [ ] Open to more
 - [ ] Add sounds/music  
@@ -68,6 +75,7 @@ Images / video to be added in the future
 ## Major Change Log
 
 - [x] 7/5/2024 - 9/5/2024 Revised Recall game works (first ver)
+- [X] 12/5/2024 Added the original Recall game in a adding-games branch, updated readme much later and yet to merge 😜
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -75,7 +83,7 @@ Images / video to be added in the future
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name](https://github.com/spyabi/RecallESP32)
+Project Link: https://github.com/spyabi/RecallESP32
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
